@@ -1,11 +1,23 @@
-import { menuOptions, welcomeMessage } from './config';
+import { BotConfig } from './types/config';
 
-export function getBotReply(message: string): string {
-  const cleanMessage = message.trim();
+export class WhatsAppBot {
+  private config: BotConfig;
 
-  if (cleanMessage in menuOptions) {
-    return menuOptions[cleanMessage as keyof typeof menuOptions];
+  constructor(config: BotConfig) {
+    this.config = config;
   }
 
-  return welcomeMessage;
+  public getReply(message: string): string {
+    const cleanMessage = message.trim();
+
+    if (cleanMessage in this.config.menuOptions) {
+      return this.config.menuOptions[cleanMessage];
+    }
+
+    return this.config.welcomeMessage;
+  }
+
+  public getTwilioConfig() {
+    return this.config.twilioConfig;
+  }
 }
